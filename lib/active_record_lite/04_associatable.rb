@@ -9,6 +9,15 @@ class AssocOptions
     :primary_key
   )
 
+  def self.assoc_options
+    @assoc_options ||= Hash.new
+    @assoc_options
+  end
+
+  def self.assoc_options=(options)
+    @assoc_options = options
+  end
+
   ActiveSupport::Inflector.inflections do |inflect|
     inflect.irregular 'human', 'humans'
   end
@@ -24,8 +33,6 @@ end
 
 class BelongsToOptions < AssocOptions
 
-
-
   def initialize(name, options = {})
 
     defaults = {
@@ -38,10 +45,12 @@ class BelongsToOptions < AssocOptions
     @foreign_key = options[:foreign_key]
     @class_name = options[:class_name]
     @primary_key = options[:primary_key]
+    self.class.assoc_options[@class_name] = options
   end
 end
 
 class HasManyOptions < AssocOptions
+
   def initialize(name, self_class_name, options = {})
     defaults = {
       foreign_key: "#{self_class_name.underscore}_id".to_sym,
@@ -52,7 +61,6 @@ class HasManyOptions < AssocOptions
     @foreign_key = options[:foreign_key]
     @class_name = options[:class_name]
     @primary_key = options[:primary_key]
-    self.class.assoc_options[name, options]
   end
 end
 

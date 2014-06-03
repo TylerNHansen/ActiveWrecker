@@ -60,11 +60,8 @@ class SQLObject < MassObject
     self.class.table_name
   end
 
-
-  # puts "hello"
-
   def self.define_column_methods
-    p self
+    # p self
     columns.each do |col|
       self.send(:define_method, (col)) { @attributes[col] }
       self.send(:define_method, ("#{col}=")) { |value| @attributes[col] = value }
@@ -99,7 +96,7 @@ class SQLObject < MassObject
       attrs[attr_name] = value
     end
     @attributes = attrs
-     self
+    self
   end
 
   def save
